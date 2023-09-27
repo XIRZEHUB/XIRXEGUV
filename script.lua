@@ -317,6 +317,36 @@ function TP(...)
 		Speed = 350
 	end
 
+	if Distance > 3000 and not (game.Players.LocalPlayer.Backpack:FindFirstChild("Special Microchip") or game.Players.LocalPlayer.Character:FindFirstChild("Special Microchip") or game.Players.LocalPlayer.Backpack:FindFirstChild("God's Chalice") or game.Players.LocalPlayer.Character:FindFirstChild("God's Chalice") or game.Players.LocalPlayer.Backpack:FindFirstChild("Hallow Essence") or game.Players.LocalPlayer.Character:FindFirstChild("Hallow Essence") or game.Players.LocalPlayer.Character:FindFirstChild("Sweet Chalice") or game.Players.LocalPlayer.Backpack:FindFirstChild("Sweet Chalice")) then
+		pcall(function()
+			tween:Cancel()
+			fkwarp = false
+
+			if game:GetService("Players")["LocalPlayer"].Data:FindFirstChild("SpawnPoint").Value == tostring(GetIsLand(RealTarget)) then 
+				wait(.1)
+				Com("F_","TeleportToSpawn")
+			elseif game:GetService("Players")["LocalPlayer"].Data:FindFirstChild("LastSpawnPoint").Value == tostring(GetIsLand(RealTarget)) then
+				game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid"):ChangeState(15)
+				wait(0.1)
+				repeat wait() until game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid").Health > 0
+			else
+				if game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid").Health > 0 then
+					repeat wait()
+						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = RealTarget
+					until game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame == RealTarget
+				end
+				wait(.08)
+				game.Players.LocalPlayer.Character.Head:Destroy()
+				repeat wait() until game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid").Health > 0
+				wait(.1)
+				Com("F_","SetSpawnPoint")
+			end
+			wait(0.2)
+
+			return
+		end)	
+	end
+
 	local tween_s = game:service"TweenService"
     local info = TweenInfo.new((RealTarget.Position - game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position).Magnitude/Speed, Enum.EasingStyle.Linear)
     local tweenw, err = pcall(function()
